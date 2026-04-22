@@ -11,8 +11,17 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Тесты для класса Parser и вычисления выражений.
+ *
+ * <p>Проверяют корректность разбора выражений,
+ * приоритет операций, работу со скобками и переменными.</p>
+ */
 class ParserTest {
 
+    /**
+     * Проверяет приоритет операций.
+     */
     @Test
     void testOperatorPriority() {
         Lexer lexer = new Lexer("2 + 3 * 4");
@@ -26,6 +35,9 @@ class ParserTest {
         assertEquals(14.0, result);
     }
 
+    /**
+     * Проверяет корректную работу скобок.
+     */
     @Test
     void testParentheses() {
         Lexer lexer = new Lexer("(2 + 3) * 4");
@@ -39,6 +51,9 @@ class ParserTest {
         assertEquals(20.0, result);
     }
 
+    /**
+     * Проверяет работу с переменными.
+     */
     @Test
     void testVariables() {
         Lexer lexer = new Lexer("a + b * 2");
@@ -56,6 +71,9 @@ class ParserTest {
         assertEquals(11.0, result);
     }
 
+    /**
+     * Проверяет унарный минус.
+     */
     @Test
     void testUnaryMinus() {
         Lexer lexer = new Lexer("-5 + 2");

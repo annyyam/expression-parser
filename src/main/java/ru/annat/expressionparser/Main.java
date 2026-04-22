@@ -8,10 +8,19 @@ import ru.annat.expressionparser.parser.Parser;
 import java.util.*;
 
 /**
- * Entry point of the application.
+ * Главный класс программы.
+ *
+ * <p>Организует полный цикл работы приложения:
+ * чтение выражения с консоли, лексический анализ, синтаксический анализ,
+ * сбор переменных, ввод их значений и вычисление результата.</p>
  */
 public class Main {
 
+    /**
+     * Точка входа в программу.
+     *
+     * @param args аргументы командной строки
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 

@@ -14,16 +14,33 @@ import java.util.List;
 
 import java.util.List;
 
+/**
+ * Класс, выполняющий синтаксический анализ (парсинг) выражения.
+ *
+ * <p>Получает список токенов от лексера и строит абстрактное синтаксическое дерево (AST),
+ * учитывая приоритет операций и структуру выражения.</p>
+ */
 public class Parser {
 
     private final List<Token> tokens;
     private int position;
 
+    /**
+     * Создаёт парсер на основе списка токенов.
+     *
+     * @param tokens список токенов
+     */
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
         this.position = 0;
     }
 
+    /**
+     * Запускает процесс парсинга и возвращает корневое выражение AST.
+     *
+     * @return выражение (корень дерева)
+     * @throws ParseException если структура выражения некорректна
+     */
     public Expression parse() {
         Expression expression = parseExpression();
 
@@ -34,6 +51,11 @@ public class Parser {
         return expression;
     }
 
+    /**
+     * Разбирает выражение с операциями сложения и вычитания.
+     *
+     * @return выражение
+     */
     private Expression parseExpression() {
         Expression expression = parseTerm();
 
@@ -46,6 +68,11 @@ public class Parser {
         return expression;
     }
 
+    /**
+     * Разбирает выражение с операциями умножения и деления.
+     *
+     * @return выражение
+     */
     private Expression parseTerm() {
         Expression expression = parseUnary();
 
@@ -57,6 +84,12 @@ public class Parser {
 
         return expression;
     }
+
+    /**
+     * Разбирает унарные операции (плюс и минус).
+     *
+     * @return выражение
+     */
     private Expression parseUnary() {
         if (match(TokenType.PLUS, TokenType.MINUS)) {
             Token operator = previous();
@@ -66,6 +99,13 @@ public class Parser {
 
         return parsePrimary();
     }
+
+    /**
+     * Разбирает базовые элементы выражения:
+     * числа, переменные, функции и выражения в скобках.
+     *
+     * @return выражение
+     */
     private Expression parsePrimary() {
         if (match(TokenType.NUMBER)) {
             Token number = previous();
@@ -106,19 +146,42 @@ public class Parser {
 
         throw new ParseException("Expected number, variable or '(' at position " + current().getPosition());
     }
+
+    /**
+     * Проверяет, достигнут ли конец списка токенов.
+     *
+     * @return true, если достигнут конец
+     */
     private boolean isAtEnd() {
         return current().getType() == TokenType.EOF;
     }
 
+    /**
+     * Возвращает текущий токен.
+     *
+     * @return текущий токен
+     */
     private Token current() {
         return tokens.get(position);
     }
 
+    /**
+     * Переходит к следующему токену.
+     *
+     * @return предыдущий токен
+     */
     private Token advance() {
         if (!isAtEnd()) position++;
         return tokens.get(position - 1);
     }
 
+    /**
+     * Проверяет, соответствует ли текущий токен одному из указанных типов,
+     * и при совпадении продвигается вперёд.
+     *
+     * @param types типы токенов
+     * @return true, если найдено совпадение
+     */
     private boolean match(TokenType... types) {
         for (TokenType type : types) {
             if (check(type)) {
@@ -129,6 +192,13 @@ public class Parser {
         return false;
     }
 
+
+    /**
+     * Проверяет тип текущего токена без продвижения.
+     *
+     * @param type тип токена
+     * @return true, если совпадает
+     */
     private boolean check(TokenType type) {
         if (isAtEnd()) {
             return false;
@@ -136,6 +206,11 @@ public class Parser {
         return current().getType() == type;
     }
 
+    /**
+     * Возвращает предыдущий токен.
+     *
+     * @return токен
+     */
     private Token previous() {
         return tokens.get(position - 1);
     }

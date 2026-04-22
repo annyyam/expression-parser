@@ -1,16 +1,26 @@
 package ru.annat.expressionparser.lexer;
 
 import ru.annat.expressionparser.exception.LexerException;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс для выполнения лексического анализа входного выражения.
+ *
+ * <p>Преобразует строку выражения в последовательность токенов,
+ * которые затем используются парсером.</p>
+ */
 public class Lexer {
 
     private final String input;
     private final List<Token> tokens;
     private int position;
 
+    /**
+     * Создаёт лексер для заданного выражения.
+     *
+     * @param input строка выражения
+     */
     public Lexer(String input) {
         if (input == null) {
             throw new IllegalArgumentException("Input must not be null");
@@ -20,6 +30,12 @@ public class Lexer {
         this.position = 0;
     }
 
+    /**
+     * Выполняет разбор строки и возвращает список токенов.
+     *
+     * @return список токенов
+     * @throws LexerException если встречен недопустимый символ
+     */
     public List<Token> tokenize() {
         while (!isAtEnd()) {
             char current = currentChar();
@@ -78,6 +94,15 @@ public class Lexer {
         return tokens;
     }
 
+    /**
+     * Считывает числовой токен из входной строки.
+     *
+     * <p>Поддерживает как целые, так и дробные числа.
+     * Проверяет корректность формата (например, не допускает несколько точек).</p>
+     *
+     * @return токен типа NUMBER
+     * @throws LexerException если формат числа некорректен
+     */
     private Token readNumber() {
         int start = position;
         boolean hasDot = false;
@@ -111,6 +136,14 @@ public class Lexer {
         return new Token(TokenType.NUMBER, text, start);
     }
 
+    /**
+     * Считывает идентификатор (имя переменной или функции).
+     *
+     * <p>Идентификатор может содержать буквы, цифры и символ подчёркивания,
+     * но должен начинаться с буквы или символа '_'.</p>
+     *
+     * @return токен типа IDENTIFIER
+     */
     private Token readIdentifier() {
         int start = position;
 
@@ -127,14 +160,27 @@ public class Lexer {
         return new Token(TokenType.IDENTIFIER, text, start);
     }
 
+    /**
+     * Проверяет, достигнут ли конец входной строки.
+     *
+     * @return true, если достигнут конец строки, иначе false
+     */
     private boolean isAtEnd() {
         return position >= input.length();
     }
 
+    /**
+     * Возвращает текущий символ входной строки.
+     *
+     * @return текущий символ
+     */
     private char currentChar() {
         return input.charAt(position);
     }
 
+    /**
+     * Переходит к следующему символу во входной строке.
+     */
     private void advance() {
         position++;
     }

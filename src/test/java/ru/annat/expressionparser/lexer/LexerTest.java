@@ -3,8 +3,18 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Тесты для класса Lexer.
+ *
+ * <p>Проверяют корректность лексического анализа:
+ * разбор выражений, идентификаторов и обработку ошибок.</p>
+ */
 class LexerTest {
 
+
+    /**
+     * Проверяет разбор простого выражения.
+     */
     @Test
     void testSimpleExpression() {
         Lexer lexer = new Lexer("2 + 3");
@@ -23,6 +33,9 @@ class LexerTest {
         assertEquals(TokenType.EOF, tokens.get(3).getType());
     }
 
+    /**
+     * Проверяет разбор идентификатора.
+     */
     @Test
     void testIdentifier() {
         Lexer lexer = new Lexer("abc");
@@ -32,6 +45,9 @@ class LexerTest {
         assertEquals("abc", tokens.get(0).getText());
     }
 
+    /**
+     * Проверяет обработку некорректного символа.
+     */
     @Test
     void testInvalidCharacter() {
         Lexer lexer = new Lexer("2 + @");

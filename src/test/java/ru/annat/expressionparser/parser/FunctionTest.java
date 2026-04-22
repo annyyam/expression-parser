@@ -10,8 +10,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Тесты для проверки работы функций.
+ *
+ * <p>Проверяют корректность вычисления встроенных функций
+ * и их использования в выражениях.</p>
+ */
 class FunctionTest {
 
+    /**
+     * Проверяет функцию sqrt.
+     */
     @Test
     void testSqrt() {
         Lexer lexer = new Lexer("sqrt(25)");
@@ -25,6 +34,9 @@ class FunctionTest {
         assertEquals(5.0, result);
     }
 
+    /**
+     * Проверяет функцию abs.
+     */
     @Test
     void testAbs() {
         Lexer lexer = new Lexer("abs(-5)");
@@ -38,6 +50,9 @@ class FunctionTest {
         assertEquals(5.0, result);
     }
 
+    /**
+     * Проверяет использование функций в выражении.
+     */
     @Test
     void testFunctionInExpression() {
         Lexer lexer = new Lexer("sqrt(16) + abs(-3)");
