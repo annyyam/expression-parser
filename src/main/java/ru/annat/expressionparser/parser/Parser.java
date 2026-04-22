@@ -8,6 +8,9 @@ import ru.annat.expressionparser.ast.BinaryExpression;
 import ru.annat.expressionparser.ast.UnaryExpression;
 import ru.annat.expressionparser.ast.NumberExpression;
 import ru.annat.expressionparser.ast.VariableExpression;
+import ru.annat.expressionparser.ast.FunctionCallExpression;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.List;
 
@@ -71,6 +74,23 @@ public class Parser {
 
         if (match(TokenType.IDENTIFIER)) {
             Token identifier = previous();
+
+            if (match(TokenType.LEFT_PAREN)) {
+                List<Expression> arguments = new ArrayList<>();
+
+                if (!check(TokenType.RIGHT_PAREN)) {
+                    do {
+                        arguments.add(parseExpression());
+                    } while (match(TokenType.COMMA));
+                }
+
+                if (!match(TokenType.RIGHT_PAREN)) {
+                    throw new ParseException("Expected ')' after function arguments at position " + current().getPosition());
+                }
+
+                return new FunctionCallExpression(identifier.getText(), arguments);
+            }
+
             return new VariableExpression(identifier.getText());
         }
 
