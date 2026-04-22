@@ -34,4 +34,11 @@ public class BinaryExpression implements Expression {
             default -> throw new ParseException("Unknown operator: " + operator);
         };
     }
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
+    }
 }

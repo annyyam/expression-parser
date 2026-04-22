@@ -24,4 +24,7 @@ public class UnaryExpression implements Expression {
             default -> throw new ParseException("Unknown unary operator: " + operator);
         };
     }
+    public Expression getExpression() {
+        return expression;
+    }
 }

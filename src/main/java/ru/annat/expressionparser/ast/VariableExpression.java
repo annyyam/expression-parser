@@ -17,4 +17,7 @@ public class VariableExpression implements Expression {
         }
         return variables.get(name);
     }
+    public String getName() {
+        return name;
+    }
 }

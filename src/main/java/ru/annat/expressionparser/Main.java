@@ -5,24 +5,46 @@ import ru.annat.expressionparser.lexer.Lexer;
 import ru.annat.expressionparser.lexer.Token;
 import ru.annat.expressionparser.parser.Parser;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * Entry point of the application.
+ */
 public class Main {
 
     public static void main(String[] args) {
-        String expressionText = "(2 + 3) * 4";
+        Scanner scanner = new Scanner(System.in);
 
-        Lexer lexer = new Lexer(expressionText);
-        List<Token> tokens = lexer.tokenize();
+        System.out.print("Введите выражение: ");
+        String expressionText = scanner.nextLine();
 
-        Parser parser = new Parser(tokens);
-        Expression expression = parser.parse();
+        try {
+            // Lexer
+            Lexer lexer = new Lexer(expressionText);
+            List<Token> tokens = lexer.tokenize();
 
-        Map<String, Double> variables = new HashMap<>();
-        double result = expression.evaluate(variables);
+            // Parser
+            Parser parser = new Parser(tokens);
+            Expression expression = parser.parse();
 
-        System.out.println("Result: " + result);
+            // Collect variables
+            VariableCollector collector = new VariableCollector();
+            Set<String> variableNames = collector.collect(expression);
+
+            // Ask user for variable values
+            Map<String, Double> variables = new HashMap<>();
+            for (String name : variableNames) {
+                System.out.print("Введите значение " + name + ": ");
+                double value = Double.parseDouble(scanner.nextLine());
+                variables.put(name, value);
+            }
+
+            // Evaluate
+            double result = expression.evaluate(variables);
+            System.out.println("Результат: " + result);
+
+        } catch (Exception e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
     }
 }
